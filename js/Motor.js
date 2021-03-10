@@ -4,7 +4,7 @@ class Motor {
     this.ancestor = ancestor;
     this.targetx = 0;
     this.targety = 0;
-    this.radius = 100;
+    this.radius = 10;
     this.angle = 0;
     this.speed = 1;
     this.color = "black";
@@ -28,15 +28,22 @@ class Motor {
     if (this.shouldDraw) {
       this.points.push({ x: this.targetx, y: this.targety });
       //   if (Math.abs(this.angle) >= this.max) {
-      if (this.points.length >= 480) {
+      if (this.points.length >= 2500) {
         this.points.shift();
         // this.angle = 0;
       }
     }
   }
-  draw() {
-    this.ctx.lineWidth = 3;
-    this.ctx.strokeStyle = this.color;
+  draw(lineWidth, filter, strokeStyle) {
+    // this.ctx.lineWidth = lineWidth;
+    this.ctx.lineJoin = "round";
+    this.ctx.lineCap = "round";
+
+    this.ctx.filter = filter;
+
+    // this.ctx.strokeStyle = "white";
+
+    this.ctx.strokeStyle = strokeStyle;
     this.points.forEach((item, index) => {
       if (index == 0) {
         this.ctx.beginPath();
@@ -50,10 +57,10 @@ class Motor {
 
     // extra lines
     if (this.shouldDraw && this.ancestor.shouldDraw) {
-      this.ctx.lineWidth = 1;
+      this.ctx.lineWidth = 70;
 
       this.points.forEach((item, index) => {
-        this.ctx.strokeStyle = `hsla(${10 - index}, 100%, ${this.tint}%,0.2)`;
+        this.ctx.strokeStyle = `hsla(${30 - index}, 100%, ${this.tint}%,0.2)`;
         const _index = Math.floor(
           this.map(index, 0, this.points.length, this.ancestor.points.length, 0)
         );
@@ -64,7 +71,7 @@ class Motor {
             this.ancestor.points[_index].x,
             this.ancestor.points[_index].y
           );
-          this.ctx.stroke();
+          // this.ctx.stroke();
           this.ctx.closePath();
         }
       });

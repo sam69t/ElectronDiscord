@@ -30,12 +30,13 @@ class App {
 
   draw() {
     // console.log("draw");
+
     // this.ctx.clearRect(0, 0, this.w, this.h);
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, this.w, this.h);
     // this.position.x++;
     // if (this.position.x + 100 > this.w) this.position.x = -100;
-    for (let i = 0; i < 99; i++) {
+    for (let i = 0; i < 199; i++) {
       this.ctx.strokeStyle =
         i % 2 == 0
           ? `rgba(37,174,228,${0.01 * i})`

@@ -3,19 +3,44 @@ const { app, BrowserWindow } = require("electron");
 let win = null;
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
+    width: 700,
     height: 600,
+
     webPreferences: {
       nodeIntegration: true,
     },
   });
+
+  // win.setBounds({
+  //   x: 1920 / 2,
+  //   y: 1080 / 2,
+  //   width: 500,
+  //   height: 400,
+  // });
+  // const winBounds = win.getBounds();
+
+  // console.log(winBounds);
+
   win.loadFile("index.html");
-  win.setFullScreen(true);
+
+  var ipcMain = require("electron").ipcMain;
+  ipcMain.on("asynchronous-message", function (evt, message) {
+    if (message == "createNewWindow") {
+      // Message received.
+      // Create new window here.
+    }
+  });
+  // win.setFullScreen(true);
+
+  // win.webContents.on("requestBounds", (event, bounds) => {
+  //   win.webContents.send("bounds", win.getBounds());
+  // });
   // win.maximize();
 }
 
 function initBot() {
   // bot integration
+
   const DiscordBot = require("./DiscordBot").DiscordBot;
   const Bot = new DiscordBot(win);
 
@@ -29,6 +54,8 @@ function initBot() {
   //   "ODEyNDU3Mjk2NTU0MzYwODMy.YDBB0g.RdNLbCWOzkKaTQvojc1P9QuZcFQ"
   // );
 }
+
+app.allowRendererProcessReuse = false;
 
 app.whenReady().then(createWindow).then(initBot);
 
